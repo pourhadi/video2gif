@@ -14,8 +14,9 @@ COPY main.py .
 
 # Set API key environment variable (override at runtime)
 ENV API_KEY=YOUR_SECURE_API_KEY_HERE
+# Default port for the application; Cloud Run will override PORT automatically (typically 8080)
+ENV PORT=8080
+EXPOSE 8080
 
-EXPOSE 8000
-
-# Start the server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Start the server, binding to the PORT environment variable
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT}"]

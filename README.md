@@ -49,9 +49,27 @@ This service provides a secure HTTP API to asynchronously convert uploaded video
    ```
    docker build -t video2gif .
    ```
-2. Run the container:  
+2. Run the container locally:  
    ```
-   docker run -d --name video2gif -e API_KEY=your_key -p 8000:8000 video2gif
+   # Maps host port 8080 to container PORT (default 8080)
+   docker run -d --name video2gif -e API_KEY=your_key -p 8080:8080 video2gif
+   ```
+
+## Deploying to Google Cloud Run
+
+1. Build and push the container to Google Container Registry:  
+   ```
+   gcloud builds submit --tag gcr.io/PROJECT_ID/video2gif
+   ```
+
+2. Deploy to Cloud Run:  
+   ```
+   gcloud run deploy video2gif \
+     --image gcr.io/PROJECT_ID/video2gif \
+     --platform managed \
+     --region YOUR_REGION \
+     --allow-unauthenticated \
+     --set-env-vars API_KEY=your_key
    ```
 
 ## Requirements
